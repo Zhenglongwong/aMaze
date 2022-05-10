@@ -1,0 +1,37 @@
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+#app {
+  width: 600px;
+  height: 600px;
+  background-color: rgb(9, 81, 57);
+  display:grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+
+}
+
+#btn-cont {
+  position: absolute;
+}
+
+.box {
+  background-color: rgb(50, 49, 49);
+}
+
+.selected {
+  background-color: rgb(65, 125, 102);
+}
+
+.end {
+  background-color: yellow;
+}
+
+.player {
+  background-color: red;
+}
