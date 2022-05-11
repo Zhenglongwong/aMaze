@@ -1,5 +1,4 @@
-
-<div x="1" y="1" class="box selected"></div>
+const maze1 = `<div x="1" y="1" class="box selected"></div>
 <div x="2" y="1" class="box selected"></div>
 <div x="3" y="1" class="box selected"></div>
 <div x="4" y="1" class="box selected"></div>
@@ -323,4 +322,6 @@
 <div x="16" y="18" class="box selected"></div>
 <div x="17" y="18" class="box selected"></div>
 <div x="18" y="18" class="box selected"></div>
+`
 
+export default maze1;

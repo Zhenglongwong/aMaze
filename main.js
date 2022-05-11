@@ -1,5 +1,7 @@
 import './style.css'
+import maze1 from './maze1'
 import $ from 'jquery'
+
 
 
 const $app = $('#app');
@@ -210,15 +212,13 @@ const runEventListeners = () => {
   $('.box').on('mouseover', drawMaze).on('click', createEnd).on('click', createStart).on('click', deleteItems)
 }
 
-const loadMap = (str) => {
-  $('#app').empty()
+const loadMap = (maze) => {
   reset()
-  $('#app').load(`${str}.html`, function () {
-    state.player_loc_x = parseInt($('.player').attr('x'))
-    state.player_loc_y = parseInt($('.player').attr('y'))
-    toggleMovement()
-    runEventListeners()
-  })
+  $('#app').html(maze)
+  state.player_loc_x = parseInt($('.player').attr('x'))
+  state.player_loc_y = parseInt($('.player').attr('y'))
+  runEventListeners()
+  toggleMovement()
 }
 
 
@@ -229,4 +229,4 @@ $('#start').on('click', toggleMovement)
 $('#selectEnd').on('click', toggleEnd)
 $('#selectStart').on('click', toggleStartPoint)
 $('#reset').on('click', reset)
-$('#map1').on('click', () => { loadMap('map1') })
+$('#map1').on('click', () => { loadMap(maze1) })
