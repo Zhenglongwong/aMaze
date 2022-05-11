@@ -170,7 +170,6 @@ const toggleDraw = () => {
   state.draw = !state.draw;
 }
 
-
 const toggleStartPoint = () => {
   state.draw = false
   state.delete = false
@@ -221,6 +220,19 @@ const loadMap = (maze) => {
   toggleMovement()
 }
 
+const instructions = () => {
+  alert(`
+  Select Maze 1 or Maze 2 to start playing immediately!
+  Use the arrow keys to move and find the yellow square hidden in the maze.
+
+  Build your own map:
+  Click draw to create your own map (toggle using 'f' key).
+  Click delete to delete mistakes (toggle using 'd' key).
+  After selecting your starting and ending position, press start game to play!
+  (Do note that only one time play is supported at this moment)`
+  )
+}
+
 
 runEventListeners()
 $('#draw').on('click', toggleDraw)
@@ -231,3 +243,4 @@ $('#selectStart').on('click', toggleStartPoint)
 $('#reset').on('click', reset)
 $('#maze1').on('click', () => { loadMap(maze1) })
 $('#maze2').on('click', () => { loadMap(maze2) })
+$('#instructions').on('click', instructions)
