@@ -5,7 +5,7 @@ import $ from 'jquery'
 const $app = $('#app');
 
 //initial setup
-const BASESTATE = {
+let state = {
   draw: false,
   move: false,
   selectStart: false,
@@ -16,8 +16,6 @@ const BASESTATE = {
   player_loc_y: 0,
   started: false
 }
-
-let state = { ...BASESTATE }
 
 const createBoxes = () => {
   for (let i = 1; i <= 18; i++) {
@@ -167,6 +165,7 @@ const toggleDraw = () => {
   state.selectEnd = false
   state.delete = false
   state.draw = !state.draw;
+  console.log(state.draw)
 }
 
 
@@ -186,7 +185,17 @@ const toggleEnd = () => {
 
 const reset = () => {
   $('.box').removeClass('selected player end mask')
-  state = { ...BASESTATE }
+  state = {
+    draw: false,
+    move: false,
+    selectStart: false,
+    selectEnd: false,
+    delete: false,
+    direction: "",
+    player_loc_x: 0,
+    player_loc_y: 0,
+    started: false
+  }
   clearInterval(intervalID)
 }
 
@@ -197,6 +206,10 @@ const toggleDelete = () => {
   state.delete = !state.delete
 }
 
+const runEventListeners = () => {
+  $('.box').on('mouseover', drawMaze).on('click', createEnd).on('click', createStart).on('click', deleteItems)
+}
+
 const loadMap = (str) => {
   $('#app').empty()
   reset()
@@ -204,10 +217,12 @@ const loadMap = (str) => {
     state.player_loc_x = parseInt($('.player').attr('x'))
     state.player_loc_y = parseInt($('.player').attr('y'))
     toggleMovement()
+    runEventListeners()
   })
 }
 
-$('.box').on('mouseover', drawMaze).on('click', createEnd).on('click', createStart).on('click', deleteItems)
+
+runEventListeners()
 $('#draw').on('click', toggleDraw)
 $('#delete').on('click', toggleDelete)
 $('#start').on('click', toggleMovement)
