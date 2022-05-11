@@ -1,5 +1,6 @@
 import './style.css'
 import maze1 from './maze1'
+import maze2 from './maze2'
 import $ from 'jquery'
 
 
@@ -20,8 +21,8 @@ let state = {
 }
 
 const createBoxes = () => {
-  for (let i = 1; i <= 18; i++) {
-    for (let j = 1; j <= 18; j++) {
+  for (let i = 1; i <= 30; i++) {
+    for (let j = 1; j <= 30; j++) {
       $app.append($("<div>").attr('x',`${j}`).attr('y',`${i}`).addClass('box'))
     }
   }
@@ -134,7 +135,7 @@ const toggleMovement = () => {
     state.started = true
   }
   if (state.move) {
-    intervalID = setInterval(updatePosition, 300)
+    intervalID = setInterval(updatePosition, 200)
   } else if (!state.move) {
     clearInterval(intervalID)
   }
@@ -167,7 +168,6 @@ const toggleDraw = () => {
   state.selectEnd = false
   state.delete = false
   state.draw = !state.draw;
-  console.log(state.draw)
 }
 
 
@@ -229,4 +229,5 @@ $('#start').on('click', toggleMovement)
 $('#selectEnd').on('click', toggleEnd)
 $('#selectStart').on('click', toggleStartPoint)
 $('#reset').on('click', reset)
-$('#map1').on('click', () => { loadMap(maze1) })
+$('#maze1').on('click', () => { loadMap(maze1) })
+$('#maze2').on('click', () => { loadMap(maze2) })
