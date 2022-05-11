@@ -7,12 +7,12 @@
   margin-top: 60px;
 }
 #app {
-  width: 600px;
-  height: 600px;
+  width: 80vh;
+  height: 80vh;
   background-color: rgb(9, 81, 57);
   display:grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(18, 1fr);
+  grid-template-rows: repeat(18, 1fr);
 }
 
 #btn-cont {
