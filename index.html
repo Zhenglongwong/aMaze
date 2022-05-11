@@ -6,17 +6,24 @@
     <title>aMaze</title>
   </head>
   <body>
-    <div id="app"></div>
-    <div id="btn-cont">
-      <button id="draw">Draw</button>
-      <button id="delete">Delete</button>
-      <button id="selectStart">Select Start Point</button>
-      <button id="selectEnd">Select End Point</button>
-      <button id="start">Start Game</button>
-      <button id="reset">Reset</button>
-      <button id="maze1">Maze 1</button>
-      <button id="maze2">Maze 2</button>
+    <div class="container">
+    <div>
+      <h2>aMAZE</h2>
     </div>
+    <div id="app"></div>
+    <div id="action-btns">
+      <button class='action-btn' id="delete">Delete</button>
+      <button class='action-btn' id="draw">Draw</button>
+      <button class='action-btn' id="selectStart">Select Start Point</button>
+      <button class='action-btn' id="selectEnd">Select End Point</button>
+      <button class='action-btn' id="start">Start Game</button>
+      <button class='action-btn' id="reset">Reset</button>
+    </div>
+    <div id="maze-btns">
+      <button class='maze-btn' id="maze1">Maze 1</button>
+      <button class='maze-btn' id="maze2">Maze 2</button>
+    </div>
+   </div>
     
     <script type="module" src="/main.js"></script>
   </body>

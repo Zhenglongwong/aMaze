@@ -6,9 +6,22 @@
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  text-align: center;
+  color: #6face8;
+}
+
 #app {
   width: 80vh;
   height: 80vh;
+  margin-top: 0px;
   background-color: rgb(9, 81, 57);
   display:grid;
   grid-template-columns: repeat(30, 1fr);
@@ -19,10 +32,13 @@
   position: absolute;
 }
 
-.box {
-  background-color: rgb(50, 49, 49);
+body {
+  background-color: rgb(29, 29, 29)
 }
 
+.box {
+  background-color: rgb(32, 71, 55);
+}
 
 .selected {
   background-color: rgb(65, 125, 102);
@@ -33,7 +49,7 @@
 }
 
 .mask {
-  background-color: black
+  background-color: rgb(128, 127, 127)
 }
 
 .player {
