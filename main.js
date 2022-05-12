@@ -36,6 +36,7 @@ const createBoxes = () => {
 createBoxes()
 
 const unmask = () => {
+  $('.box').addClass('mask')
   $(`[x=${state.player_loc_x}][y=${state.player_loc_y}]`).removeClass('mask')
   $(`[x=${state.player_loc_x + 1}][y=${state.player_loc_y}]`).removeClass('mask')
   $(`[x=${state.player_loc_x - 1}][y=${state.player_loc_y}]`).removeClass('mask')
@@ -140,8 +141,6 @@ const toggleMovement = () => {
     alert('Please select a start point and end point.')
     return
   }
-  state.totalEnds = $('.end').length
-  $('h3').text(`Objectives: 0/${state.totalEnds}`)
   state.draw = false
   state.selectStart = false
   state.selectEnd = false
@@ -149,6 +148,8 @@ const toggleMovement = () => {
   if (!state.started) {
     $('.box').addClass('mask')
     state.started = true
+    state.totalEnds = $('.end').length
+    $('h3').text(`Objectives: 0/${state.totalEnds}`)
   }
   if (state.move) {
     intervalID = setInterval(updatePosition, 200)
@@ -172,8 +173,13 @@ const handlePress = (event) => {
     case 'd':
       toggleDelete()
       break;
+    case 'h':
+      removeFog()
+      break;
     case ' ':
+      event.preventDefault()
       toggleMovement()
+      break;
   }
 } 
 
@@ -228,6 +234,11 @@ const loadMap = (maze) => {
   toggleMovement()
 }
 
+const removeFog = () => {
+  toggleMovement()
+  $('.mask').removeClass('mask')
+}
+
 const instructions = () => {
   alert(`
   Select Maze 1 or Maze 2 to start playing immediately!
@@ -241,6 +252,17 @@ const instructions = () => {
   )
 }
 
+let newMap;
+const saveMap = () => {
+  if (newMap != null) {
+    alert('Sorry you can only create one custom map!')
+    return
+  }
+  newMap = $('#app').html();
+  let mapName = prompt('Please enter a name for your map.')
+  $("#maze-btns").append($('<button>').text(mapName).addClass('maze-btn').attr('id', mapName))
+  $(`#${mapName}`).on('click', () => { loadMap(newMap) })
+}
 
 runEventListeners()
 $('#draw').on('click', toggleDraw)
@@ -252,3 +274,4 @@ $('#reset').on('click', reset)
 $('#maze1').on('click', () => { loadMap(maze1) })
 $('#maze2').on('click', () => { loadMap(maze2) })
 $('#instructions').on('click', instructions)
+$('#save').on('click', saveMap)
