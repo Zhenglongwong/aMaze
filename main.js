@@ -83,10 +83,8 @@ const updatePosition = () => {
       $('.player').removeClass('end')
       $('#obj').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
       if (state.currentEnds === state.totalEnds) {
-        $('#obj').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
-        alert(`You WIN! You took ${state.time} seconds!`)
         clearInterval(timerInterval)
-        edit()
+        alert(`You win! You took ${state.time} seconds!`)
       } 
     }
   }
@@ -183,7 +181,7 @@ const handlePress = (event) => {
     case 'f':
       toggleDelete()
       break;
-    case 'h':
+    case 'g':
       edit()
       break;
     case 'a':
@@ -256,11 +254,9 @@ const loadMap = (maze) => {
 }
 
 const edit = () => {
-  if (state.started) {
-    toggleMovement()
-  }
-  $('.mask').removeClass('mask')
+  toggleMovement()
   clearInterval(timerInterval)
+  $('.mask').removeClass('mask')
 }
 
 //if arguments are supplied from local store, it will create buttons that load maps
