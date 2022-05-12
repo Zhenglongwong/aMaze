@@ -177,14 +177,14 @@ const handlePress = (event) => {
       event.preventDefault()
       state.direction = event.key
       break;
-    case 'f':
+    case 'd':
       toggleDraw()
       break;
-    case 'd':
+    case 'f':
       toggleDelete()
       break;
     case 'h':
-      removeFog()
+      edit()
       break;
     case 'a':
       toggleStartPoint();
@@ -255,9 +255,12 @@ const loadMap = (maze) => {
   toggleMovement()
 }
 
-const removeFog = () => {
-  toggleMovement()
+const edit = () => {
+  if (state.started) {
+    toggleMovement()
+  }
   $('.mask').removeClass('mask')
+  clearInterval(timerInterval)
 }
 
 const instructions = () => {
@@ -276,7 +279,7 @@ const instructions = () => {
 //if arguments are supplied from local store, it will create buttons that load maps
 //if no arguments are supplied, it will save the current map and add it to the local store
 const saveMap = (name) => {
-  if (name) { //loading from localstorage
+  if (name) { 
     var mapName = name
   } else {
     if ($('.player').length === 0 || $('.end').length === 0) {
@@ -284,12 +287,23 @@ const saveMap = (name) => {
       return
     }
     var mapName = prompt('Please enter a name for your map.')
+    if (localStorage.getItem(mapName) !== null) {
+      localStorage.removeItem(mapName)
+      $(`#${mapName}`).remove()
+    }
     localStorage.setItem(mapName, $('#app').html())
   }
   
   $("#maze-btns").append($('<button>').text(mapName).addClass('maze-btn').attr('id', mapName))
   $(`#${mapName}`).on('click', () => { loadMap(localStorage.getItem(mapName))})
 }
+
+const deleteMaze = () => {
+  let name = prompt('Enter the name of the maze you want to delete:')
+  localStorage.removeItem(name)
+  $(`#${name}`).remove()
+}
+
 
 runEventListeners()
 $('#draw').on('click', toggleDraw)
@@ -301,10 +315,13 @@ $('#reset').on('click', reset)
 $('#maze1').on('click', () => { loadMap(maze1) })
 $('#maze2').on('click', () => { loadMap(maze2) })
 $('#instructions').on('click', instructions)
-$('#save').on('click', (event) => { saveMap()})
+$('#save').on('click', (event) => { saveMap() })
+$('#deleteMaze').on('click', deleteMaze)
+$('#edit').on('click', edit)
 
 //load any existing maps in the database
 // https://stackoverflow.com/questions/3138564/looping-through-localstorage-in-html5-and-javascript
 Object.keys(localStorage).forEach((key) => {
   saveMap(key)
 });
+
