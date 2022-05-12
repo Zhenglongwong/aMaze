@@ -3,8 +3,6 @@ import maze1 from './maze1'
 import maze2 from './maze2'
 import $ from 'jquery'
 
-
-
 const $app = $('#app');
 
 //initial setup
@@ -20,7 +18,9 @@ const baseState = {
   direction: "",
   player_loc_x: 0,
   player_loc_y: 0,
-  started: false
+  started: false,
+  time: 0,
+  currentMap: ""
 }
 
 let state = { ...baseState }
@@ -81,10 +81,12 @@ const updatePosition = () => {
     if ($('.player').attr('class').includes('end')) {
       state.currentEnds += 1
       $('.player').removeClass('end')
-      $('h3').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
+      $('#obj').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
       if (state.currentEnds === state.totalEnds) {
-        $('h3').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
-        alert('You win!')
+        $('#obj').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
+        alert(`You WIN! You took ${state.time} seconds!`)
+        clearInterval(timerInterval)
+        loadMap(state.currentMap)
       } 
     }
   }
@@ -136,6 +138,13 @@ const updatePosition = () => {
   } unmask()
 }
 let intervalID;
+let timerInterval;
+const updateTimer = () => {
+  $('#timer').text(`Time(s): ${state.time}`)
+  state.time += 1
+}
+
+
 const toggleMovement = () => {
   if ($('.player').length === 0 || $('.end').length === 0) {
     alert('Please select a start point and end point.')
@@ -149,7 +158,8 @@ const toggleMovement = () => {
     $('.box').addClass('mask')
     state.started = true
     state.totalEnds = $('.end').length
-    $('h3').text(`Objectives: 0/${state.totalEnds}`)
+    $('#obj').text(`Objectives: 0/${state.totalEnds}`)
+    timerInterval = setInterval(updateTimer, 1000)
   }
   if (state.move) {
     intervalID = setInterval(updatePosition, 200)
@@ -212,6 +222,8 @@ const reset = () => {
   $('.box').removeClass('selected player end mask')
   state = { ...baseState }
   clearInterval(intervalID)
+  clearInterval(timerInterval)
+  $('#timer').text(`Time(s): ${state.time}`)
 }
 
 const toggleDelete = () => {
@@ -227,6 +239,7 @@ const runEventListeners = () => {
 
 const loadMap = (maze) => {
   reset()
+  state.currentMap = maze
   $('#app').html(maze)
   state.player_loc_x = parseInt($('.player').attr('x'))
   state.player_loc_y = parseInt($('.player').attr('y'))
@@ -256,6 +269,10 @@ let newMap;
 const saveMap = () => {
   if (newMap != null) {
     alert('Sorry you can only create one custom map!')
+    return
+  }
+  if ($('.player').length === 0 || $('.end').length === 0) {
+    alert('Please select a start point and at least 1 objective.')
     return
   }
   newMap = $('#app').html();

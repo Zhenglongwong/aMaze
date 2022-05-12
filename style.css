@@ -15,7 +15,11 @@
 
 h2, h3 {
   text-align: center;
-  color: #6face8;
+  color: #ffb86c;
+}
+
+#obj {
+  color: #ffb86c;
 }
 
 #app {
@@ -33,25 +37,25 @@ h2, h3 {
 }
 
 body {
-  background-color: rgb(29, 29, 29)
+  background-color: #282a36
 }
 
 .box {
-  background-color: rgb(32, 71, 55);
+  background-color: #6272a4;
 }
 
 .selected {
-  background-color: rgb(65, 125, 102);
+  background-color: #ff79c6;
 }
 
 .end {
-  background-color: yellow;
+  background-color: #ffb86c;
 }
 
 .mask {
-  background-color: rgb(47, 46, 46)
+  background-color: #44475a
 }
 
 .player {
-  background-color: red;
+  background-color: #ff5555;
 }

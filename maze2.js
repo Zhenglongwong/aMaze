@@ -521,7 +521,7 @@ const maze2 = `<div x="1" y="1" class="box selected"></div>
 <div x="11" y="18" class="box"></div>
 <div x="12" y="18" class="box"></div>
 <div x="13" y="18" class="box selected"></div>
-<div x="14" y="18" class="box"></div>
+<div x="14" y="18" class="box end"></div>
 <div x="15" y="18" class="box"></div>
 <div x="16" y="18" class="box"></div>
 <div x="17" y="18" class="box"></div>
@@ -674,7 +674,7 @@ const maze2 = `<div x="1" y="1" class="box selected"></div>
 <div x="14" y="23" class="box"></div>
 <div x="15" y="23" class="box"></div>
 <div x="16" y="23" class="box selected"></div>
-<div x="17" y="23" class="box"></div>
+<div x="17" y="23" class="box end"></div>
 <div x="18" y="23" class="box"></div>
 <div x="19" y="23" class="box"></div>
 <div x="20" y="23" class="box"></div>
@@ -746,14 +746,14 @@ const maze2 = `<div x="1" y="1" class="box selected"></div>
 <div x="26" y="25" class="box"></div>
 <div x="27" y="25" class="box"></div>
 <div x="28" y="25" class="box selected"></div>
-<div x="29" y="25" class="box"></div>
+<div x="29" y="25" class="box end"></div>
 <div x="30" y="25" class="box selected"></div>
 <div x="1" y="26" class="box selected"></div>
 <div x="2" y="26" class="box"></div>
 <div x="3" y="26" class="box"></div>
 <div x="4" y="26" class="box selected"></div>
 <div x="5" y="26" class="box selected"></div>
-<div x="6" y="26" class="box"></div>
+<div x="6" y="26" class="box end"></div>
 <div x="7" y="26" class="box"></div>
 <div x="8" y="26" class="box"></div>
 <div x="9" y="26" class="box"></div>
