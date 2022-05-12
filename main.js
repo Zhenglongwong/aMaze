@@ -186,6 +186,12 @@ const handlePress = (event) => {
     case 'h':
       removeFog()
       break;
+    case 'a':
+      toggleStartPoint();
+      break;
+    case 's':
+      toggleEnd();
+      break;
     case ' ':
       event.preventDefault()
       toggleMovement()
@@ -224,6 +230,8 @@ const reset = () => {
   clearInterval(intervalID)
   clearInterval(timerInterval)
   $('#timer').text(`Time(s): ${state.time}`)
+  $('#obj').text(`Objectives: 0/${state.totalEnds}`)
+  console.log(state)
 }
 
 const toggleDelete = () => {
@@ -265,20 +273,22 @@ const instructions = () => {
   )
 }
 
-let newMap;
-const saveMap = () => {
-  if (newMap != null) {
-    alert('Sorry you can only create one custom map!')
-    return
+//if arguments are supplied from local store, it will create buttons that load maps
+//if no arguments are supplied, it will save the current map and add it to the local store
+const saveMap = (name) => {
+  if (name) { //loading from localstorage
+    var mapName = name
+  } else {
+    if ($('.player').length === 0 || $('.end').length === 0) {
+      alert('Please select a start point and at least 1 objective.')
+      return
+    }
+    var mapName = prompt('Please enter a name for your map.')
+    localStorage.setItem(mapName, $('#app').html())
   }
-  if ($('.player').length === 0 || $('.end').length === 0) {
-    alert('Please select a start point and at least 1 objective.')
-    return
-  }
-  newMap = $('#app').html();
-  let mapName = prompt('Please enter a name for your map.')
+  
   $("#maze-btns").append($('<button>').text(mapName).addClass('maze-btn').attr('id', mapName))
-  $(`#${mapName}`).on('click', () => { loadMap(newMap) })
+  $(`#${mapName}`).on('click', () => { loadMap(localStorage.getItem(mapName))})
 }
 
 runEventListeners()
@@ -291,4 +301,10 @@ $('#reset').on('click', reset)
 $('#maze1').on('click', () => { loadMap(maze1) })
 $('#maze2').on('click', () => { loadMap(maze2) })
 $('#instructions').on('click', instructions)
-$('#save').on('click', saveMap)
+$('#save').on('click', (event) => { saveMap()})
+
+//load any existing maps in the database
+// https://stackoverflow.com/questions/3138564/looping-through-localstorage-in-html5-and-javascript
+Object.keys(localStorage).forEach((key) => {
+  saveMap(key)
+});
