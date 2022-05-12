@@ -8,17 +8,22 @@ import $ from 'jquery'
 const $app = $('#app');
 
 //initial setup
-let state = {
+
+const baseState = {
   draw: false,
   move: false,
   selectStart: false,
   selectEnd: false,
   delete: false,
+  totalEnds: 0,
+  currentEnds: 0,
   direction: "",
   player_loc_x: 0,
   player_loc_y: 0,
   started: false
 }
+
+let state = { ...baseState }
 
 const createBoxes = () => {
   for (let i = 1; i <= 30; i++) {
@@ -66,19 +71,28 @@ const createStart = (event) => {
 
 const createEnd = (event) => {
   if (state.selectEnd && !$(event.target).attr('class').includes('selected')) {
-    $('.end').removeClass('end')
     $(event.target).addClass('end')
   }
 }
 
 const updatePosition = () => {
+  const endCheck = () => {
+    if ($('.player').attr('class').includes('end')) {
+      state.currentEnds += 1
+      $('.player').removeClass('end')
+      $('h3').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
+      if (state.currentEnds === state.totalEnds) {
+        $('h3').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
+        alert('You win!')
+      } 
+    }
+  }
+  
   const movePlayer = () => {
     $('.player').removeClass('player')
     $(`[x=${state.player_loc_x}][y=${state.player_loc_y}]`).addClass('player')
     unmask()
-    if ($(`[x=${state.player_loc_x}][y=${state.player_loc_y}]`).attr('class').includes('end')) {
-      alert('You win!')
-    }
+    endCheck()
   }
 
   const validPath = (x, y) => {
@@ -126,6 +140,8 @@ const toggleMovement = () => {
     alert('Please select a start point and end point.')
     return
   }
+  state.totalEnds = $('.end').length
+  $('h3').text(`Objectives: 0/${state.totalEnds}`)
   state.draw = false
   state.selectStart = false
   state.selectEnd = false
@@ -156,6 +172,8 @@ const handlePress = (event) => {
     case 'd':
       toggleDelete()
       break;
+    case ' ':
+      toggleMovement()
   }
 } 
 
@@ -186,17 +204,7 @@ const toggleEnd = () => {
 
 const reset = () => {
   $('.box').removeClass('selected player end mask')
-  state = {
-    draw: false,
-    move: false,
-    selectStart: false,
-    selectEnd: false,
-    delete: false,
-    direction: "",
-    player_loc_x: 0,
-    player_loc_y: 0,
-    started: false
-  }
+  state = { ...baseState }
   clearInterval(intervalID)
 }
 
