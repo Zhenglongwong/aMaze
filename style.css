@@ -6,14 +6,25 @@
   color: #2c3e50;
   margin-top: 60px;
 }
-
+body {
+  background-color: #282a36;
+  color: #ffb86c;
+}
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-h2, h3 {
+#instructions-ctn {
+  position: fixed;
+  padding: 1rem 2rem;
+  width: 80vh;
+  background-color: lightslategray;
+  opacity: 0.95;
+}
+
+h2, h3, h4 {
   text-align: center;
   color: #ffb86c;
 }
@@ -34,10 +45,6 @@ h2, h3 {
 
 #btn-cont {
   position: absolute;
-}
-
-body {
-  background-color: #282a36
 }
 
 .box {

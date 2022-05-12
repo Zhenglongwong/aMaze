@@ -86,7 +86,7 @@ const updatePosition = () => {
         $('#obj').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
         alert(`You WIN! You took ${state.time} seconds!`)
         clearInterval(timerInterval)
-        loadMap(state.currentMap)
+        edit()
       } 
     }
   }
@@ -263,19 +263,6 @@ const edit = () => {
   clearInterval(timerInterval)
 }
 
-const instructions = () => {
-  alert(`
-  Select Maze 1 or Maze 2 to start playing immediately!
-  Use the arrow keys to move and find the yellow square hidden in the maze.
-
-  Build your own map:
-  Click draw to create your own map (toggle using 'f' key).
-  Click delete to delete mistakes (toggle using 'd' key).
-  After selecting your starting and ending position, press start game to play!
-  (Do note that only one time play is supported at this moment)`
-  )
-}
-
 //if arguments are supplied from local store, it will create buttons that load maps
 //if no arguments are supplied, it will save the current map and add it to the local store
 const saveMap = (name) => {
@@ -304,6 +291,14 @@ const deleteMaze = () => {
   $(`#${name}`).remove()
 }
 
+const showInstructions = () => {
+  $('#instructions-ctn').show();
+}
+
+const hideInstructions = () => {
+  $('#instructions-ctn').hide();
+}
+hideInstructions()
 
 runEventListeners()
 $('#draw').on('click', toggleDraw)
@@ -314,7 +309,8 @@ $('#selectStart').on('click', toggleStartPoint)
 $('#reset').on('click', reset)
 $('#maze1').on('click', () => { loadMap(maze1) })
 $('#maze2').on('click', () => { loadMap(maze2) })
-$('#instructions').on('click', instructions)
+$('#instructions').on('click', showInstructions)
+$('#closeInstructions').on('click', hideInstructions)
 $('#save').on('click', (event) => { saveMap() })
 $('#deleteMaze').on('click', deleteMaze)
 $('#edit').on('click', edit)
@@ -324,4 +320,6 @@ $('#edit').on('click', edit)
 Object.keys(localStorage).forEach((key) => {
   saveMap(key)
 });
+
+
 

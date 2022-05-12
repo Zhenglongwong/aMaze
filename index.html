@@ -9,8 +9,29 @@
     <div class="container">
     <div>
       <h2>aMAZE</h2>
+      <button class='action-btn' id="instructions">Instructions</button>
       <h3 id="obj"></h3>
       <h3 id="timer"></h3>
+    </div>
+    <div id="instructions-ctn">
+      <h2> Instructions</h2>
+      <p> Welcome to aMAZE! The aim of the game is simple! Navigate your way (as an ambitious red square) around a maze to find the yellow objectives hidden around. Collect all the objectives in the shortest amount of time to win! Press Maze 1 or Maze 2 to begin playing!</p>
+      <h2> Controls:</h2>
+      <p> Arrow keys to move, spacebar to start and stop movement.</p>
+      <h2> Create a Maze:</h2>
+      <p> Use the buttons below or their respective keyboard shortcuts to toggle functions and put together the maze of your dreams! </p>
+      <ul>
+        <li><strong>Choose Start ('A'):</strong> Select the starting point of the player</li>
+        <li><strong>Create Objective ('S'):</strong> Click on the board to create an objective</li>
+        <li><strong>Draw ('D'):</strong> Hover over the board to draw your maze (use 'D' key to turn this off and on as you draw)</li>
+        <li><strong>Delete ('F'):</strong> Click on mistakes to delete them</li>
+        <li><strong>Empty Board:</strong> Creates a fresh canvas (erases everything currently on the board)</li>
+        <li><strong>Start Game:</strong> Conceals the maze and allows your player to start moving with arrow keys</li>
+        <li><strong>Enter Edit Mode ('G'):</strong> Stops an on-going game and reveals the maze, allowing you to make edits. (Works on maze 1 or 2)</li>
+      </ul>
+      <h2> Save Your Work:</h2>
+      <p>Use the 'Save Current Maze' button to save your maze for next time. This adds it as a playable maze that you can edit using 'Enter Edit Mode' (just press 'G'). Using the name of an existing maze when saving will override that maze. You can also delete existing mazes.</p>
+      <button class='action-btn' id="closeInstructions">X</button>
     </div>
     <div id="app"></div>
     <div id="action-btns">
@@ -21,7 +42,6 @@
       <button class='action-btn' id="start">Start Game</button>
       <button class='action-btn' id="reset">Empty Board</button>
       <button class='action-btn' id="edit">Enter Edit Mode</button>
-      <button class='action-btn' id="instructions">Instructions</button>
       <button class='action-btn' id="save">Save Current Maze</button>
       <button class='action-btn' id="deleteMaze">Delete a Maze</button>
     </div>
