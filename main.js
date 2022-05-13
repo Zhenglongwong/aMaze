@@ -3,11 +3,19 @@ import maze1 from './maze1'
 import maze2 from './maze2'
 import $ from 'jquery'
 
-const $app = $('#app');
+
 
 //initial setup
+const PLAYERCLASS = '.player';
+const ENDCLASS = '.end';
+const BOXCLASS = '.box';
+const APPCLASS = '#app';
+const PLAYER = 'player';
+const MASK = 'mask';
+const WALL = 'selected';
+const OBJECTIVE = 'end';
 
-const baseState = {
+const BASESTATE = {
   draw: false,
   move: false,
   selectStart: false,
@@ -23,64 +31,68 @@ const baseState = {
   currentMap: ""
 }
 
-let state = { ...baseState }
+let state = { ...BASESTATE }
+let intervalID;
+let timerInterval;
 
-const createBoxes = () => {
+const createGrid = () => {
   for (let i = 1; i <= 30; i++) {
     for (let j = 1; j <= 30; j++) {
-      $app.append($("<div>").attr('x',`${j}`).attr('y',`${i}`).addClass('box'))
+      $(APPCLASS).append($("<div>").attr('x',`${j}`).attr('y',`${i}`).addClass('box'))
     }
   }
 }
 
-createBoxes()
-
 const unmask = () => {
-  $('.box').addClass('mask')
-  $(`[x=${state.player_loc_x}][y=${state.player_loc_y}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x + 1}][y=${state.player_loc_y}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x - 1}][y=${state.player_loc_y}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x}][y=${state.player_loc_y + 1}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x}][y=${state.player_loc_y - 1}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x + 1}][y=${state.player_loc_y + 1}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x -1}][y=${state.player_loc_y + 1}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x + 1}][y=${state.player_loc_y - 1}]`).removeClass('mask')
-  $(`[x=${state.player_loc_x - 1}][y=${state.player_loc_y - 1}]`).removeClass('mask')
+  $(BOXCLASS).addClass(MASK)
+  $(`[x=${state.player_loc_x}][y=${state.player_loc_y}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x + 1}][y=${state.player_loc_y}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x - 1}][y=${state.player_loc_y}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x}][y=${state.player_loc_y + 1}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x}][y=${state.player_loc_y - 1}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x + 1}][y=${state.player_loc_y + 1}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x -1}][y=${state.player_loc_y + 1}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x + 1}][y=${state.player_loc_y - 1}]`).removeClass(MASK)
+  $(`[x=${state.player_loc_x - 1}][y=${state.player_loc_y - 1}]`).removeClass(MASK)
 }
 
 //eventhandlers for the board that modify it for the game
 const drawMaze = (event) => {
   if (state.draw) {
-    $(event.target).addClass('selected')
+    $(event.target).addClass(WALL)
   }
 }
 
 const deleteItems = (event) => {
   if (state.delete) {
-    $(event.target).removeClass('selected player end')
+    $(event.target).removeClass(`${PLAYER} ${OBJECTIVE} ${WALL}`)
   }
 }
 
 const createStart = (event) => {
   if (state.selectStart) {
-    $('.player').removeClass('player')
-    $(event.target).addClass('player')
-    state.player_loc_x = parseInt($('.player').attr('x'))
-    state.player_loc_y = parseInt($('.player').attr('y'))
-  }  
-}
-
-const createEnd = (event) => {
-  if (state.selectEnd && !$(event.target).attr('class').includes('selected')) {
-    $(event.target).addClass('end')
+    $(PLAYERCLASS).removeClass(PLAYER)
+    $(event.target).addClass(PLAYER)
+    state.player_loc_x = parseInt($(PLAYERCLASS).attr('x'))
+    state.player_loc_y = parseInt($(PLAYERCLASS).attr('y'))
   }
 }
 
+const createEnd = (event) => {
+  if (state.selectEnd && !$(event.target).attr('class').includes(WALL)) {
+    $(event.target).addClass(OBJECTIVE)
+  }
+}
+
+//depending on the current value of state.direction
+//it wil move the player, update state.loc
+//check if the game has ended
+//should return the state at the end of each move
 const updatePosition = () => {
   const endCheck = () => {
-    if ($('.player').attr('class').includes('end')) {
+    if ($(PLAYERCLASS).attr('class').includes(OBJECTIVE)) {
       state.currentEnds += 1
-      $('.player').removeClass('end')
+      $(PLAYERCLASS).removeClass(OBJECTIVE)
       $('#obj').text(`Objectives: ${state.currentEnds}/${state.totalEnds}`)
       if (state.currentEnds === state.totalEnds) {
         clearInterval(timerInterval)
@@ -90,15 +102,15 @@ const updatePosition = () => {
   }
   
   const movePlayer = () => {
-    $('.player').removeClass('player')
-    $(`[x=${state.player_loc_x}][y=${state.player_loc_y}]`).addClass('player')
+    $(PLAYERCLASS).removeClass(PLAYER)
+    $(`[x=${state.player_loc_x}][y=${state.player_loc_y}]`).addClass(PLAYER)
     unmask()
     endCheck()
   }
 
   const validPath = (x, y) => {
     try {
-      return(!$(`[x=${x}][y=${y}]`).attr('class').includes('selected'))
+      return(!$(`[x=${x}][y=${y}]`).attr('class').includes(WALL))
     } catch (err) {}
   }
 
@@ -135,16 +147,14 @@ const updatePosition = () => {
       break;
   } unmask()
 }
-let intervalID;
-let timerInterval;
+
 const updateTimer = () => {
   $('#timer').text(`Time(s): ${state.time}`)
   state.time += 1
 }
 
-
 const toggleMovement = () => {
-  if ($('.player').length === 0 || $('.end').length === 0) {
+  if ($(PLAYERCLASS).length === 0 || $(ENDCLASS).length === 0) {
     alert('Please select a start point and end point.')
     return
   }
@@ -153,9 +163,9 @@ const toggleMovement = () => {
   state.selectEnd = false
   state.move = !state.move
   if (!state.started) {
-    $('.box').addClass('mask')
+    $(BOXCLASS).addClass(MASK)
     state.started = true
-    state.totalEnds = $('.end').length
+    state.totalEnds = $(ENDCLASS).length
     $('#obj').text(`Objectives: 0/${state.totalEnds}`)
     timerInterval = setInterval(updateTimer, 1000)
   }
@@ -197,7 +207,6 @@ const handlePress = (event) => {
   }
 } 
 
-window.addEventListener('keydown', handlePress)
 
 //toggles that change state for the various actions
 //eventhandlers for buttons
@@ -222,16 +231,6 @@ const toggleEnd = () => {
   state.selectEnd = !state.selectEnd;
 }
 
-const reset = () => {
-  $('.box').removeClass('selected player end mask')
-  state = { ...baseState }
-  clearInterval(intervalID)
-  clearInterval(timerInterval)
-  $('#timer').text(`Time(s): ${state.time}`)
-  $('#obj').text(`Objectives: 0/${state.totalEnds}`)
-  console.log(state)
-}
-
 const toggleDelete = () => {
   state.draw = false
   state.selectStart = false
@@ -239,16 +238,26 @@ const toggleDelete = () => {
   state.delete = !state.delete
 }
 
+const reset = () => {
+  $(BOXCLASS).removeClass('selected player end mask')
+  state = { ...BASESTATE }
+  clearInterval(intervalID)
+  clearInterval(timerInterval)
+  $('#timer').text(`Time(s): ${state.time}`)
+  $('#obj').text(`Objectives: 0/${state.totalEnds}`)
+  console.log(state)
+}
+
 const runEventListeners = () => {
-  $('.box').on('mouseover', drawMaze).on('click', createEnd).on('click', createStart).on('click', deleteItems)
+  $(BOXCLASS).on('mouseover', drawMaze).on('click', createEnd).on('click', createStart).on('click', deleteItems)
 }
 
 const loadMap = (maze) => {
   reset()
   state.currentMap = maze
-  $('#app').html(maze)
-  state.player_loc_x = parseInt($('.player').attr('x'))
-  state.player_loc_y = parseInt($('.player').attr('y'))
+  $(APPCLASS).html(maze)
+  state.player_loc_x = parseInt($(PLAYERCLASS).attr('x'))
+  state.player_loc_y = parseInt($(PLAYERCLASS).attr('y'))
   runEventListeners()
   toggleMovement()
 }
@@ -256,7 +265,7 @@ const loadMap = (maze) => {
 const edit = () => {
   toggleMovement()
   clearInterval(timerInterval)
-  $('.mask').removeClass('mask')
+  $('.mask').removeClass(MASK)
 }
 
 //if arguments are supplied from local store, it will create buttons that load maps
@@ -265,7 +274,7 @@ const saveMap = (name) => {
   if (name) { 
     var mapName = name
   } else {
-    if ($('.player').length === 0 || $('.end').length === 0) {
+    if ($(PLAYERCLASS).length === 0 || $(ENDCLASS).length === 0) {
       alert('Please select a start point and at least 1 objective.')
       return
     }
@@ -274,7 +283,7 @@ const saveMap = (name) => {
       localStorage.removeItem(mapName)
       $(`#${mapName}`).remove()
     }
-    localStorage.setItem(mapName, $('#app').html())
+    localStorage.setItem(mapName, $(APPCLASS).html())
   }
   
   $("#maze-btns").append($('<button>').text(mapName).addClass('maze-btn').attr('id', mapName))
@@ -294,28 +303,34 @@ const showInstructions = () => {
 const hideInstructions = () => {
   $('#instructions-ctn').hide();
 }
-hideInstructions()
-
-runEventListeners()
-$('#draw').on('click', toggleDraw)
-$('#delete').on('click', toggleDelete)
-$('#start').on('click', toggleMovement)
-$('#selectEnd').on('click', toggleEnd)
-$('#selectStart').on('click', toggleStartPoint)
-$('#reset').on('click', reset)
-$('#maze1').on('click', () => { loadMap(maze1) })
-$('#maze2').on('click', () => { loadMap(maze2) })
-$('#instructions').on('click', showInstructions)
-$('#closeInstructions').on('click', hideInstructions)
-$('#save').on('click', (event) => { saveMap() })
-$('#deleteMaze').on('click', deleteMaze)
-$('#edit').on('click', edit)
 
 //load any existing maps in the database
 // https://stackoverflow.com/questions/3138564/looping-through-localstorage-in-html5-and-javascript
-Object.keys(localStorage).forEach((key) => {
-  saveMap(key)
-});
+const loadExistingMazes = () => {
+  Object.keys(localStorage).forEach((key) => {
+    saveMap(key)
+  });
+}
 
+const main = () => {
+  createGrid()
+  hideInstructions()
+  loadExistingMazes()
+  runEventListeners()
+  $('#draw').on('click', toggleDraw)
+  $('#delete').on('click', toggleDelete)
+  $('#start').on('click', toggleMovement)
+  $('#selectEnd').on('click', toggleEnd)
+  $('#selectStart').on('click', toggleStartPoint)
+  $('#reset').on('click', reset)
+  $('#maze1').on('click', () => { loadMap(maze1) })
+  $('#maze2').on('click', () => { loadMap(maze2) })
+  $('#instructions').on('click', showInstructions)
+  $('#closeInstructions').on('click', hideInstructions)
+  $('#save').on('click', (event) => { saveMap() })
+  $('#deleteMaze').on('click', deleteMaze)
+  $('#edit').on('click', edit)
+  window.addEventListener('keydown', handlePress)
+}
 
-
+main()
