@@ -131,39 +131,39 @@ const createEnd = (event) => {
 };
 
 const endCheck = () => {
-  if (
-    $(PLAYERCLASS)
-      .attr("class")
-      .includes(OBJECTIVE)
-  ) {
-    state.currentEnds += 1;
-    $(PLAYERCLASS).removeClass(OBJECTIVE);
-    $("#obj").text(
-      `Objectives: ${state.currentEnds}/${state.totalEnds}`
-    );
-    if (state.currentEnds === state.totalEnds) {
-      clearInterval(timerInterval);
-      alert(
-        `You win! You took ${state.time} seconds!`
-      );
-    }
-  }
+	if (
+		$(PLAYERCLASS)
+			.attr("class")
+			.includes(OBJECTIVE)
+	) {
+		state.currentEnds += 1;
+		$(PLAYERCLASS).removeClass(OBJECTIVE);
+		$("#obj").text(
+			`Objectives: ${state.currentEnds}/${state.totalEnds}`
+		);
+		if (state.currentEnds === state.totalEnds) {
+			clearInterval(timerInterval);
+			alert(
+				`You win! You took ${state.time} seconds!`
+			);
+		}
+	}
 };
 
 const movePlayer = () => {
-  $(PLAYERCLASS).removeClass(PLAYER);
-  $(
-    `[x=${state.player_loc_x}][y=${state.player_loc_y}]`
-  ).addClass(PLAYER);
+	$(PLAYERCLASS).removeClass(PLAYER);
+	$(
+		`[x=${state.player_loc_x}][y=${state.player_loc_y}]`
+	).addClass(PLAYER);
 };
 
 const validPath = (x, y) => {
-  try {
-    return !$(`[x=${x}][y=${y}]`)
-      .attr("class")
-      .includes(WALL);
+	try {
+		return !$(`[x=${x}][y=${y}]`)
+			.attr("class")
+			.includes(WALL);
 	} catch (err) {
-		return false
+		return false;
 	}
 };
 
@@ -175,9 +175,9 @@ const updatePosition = () => {
 				validPath(state.player_loc_x, nextStateY)
 			) {
 				state.player_loc_y = nextStateY;
-        movePlayer();
-        unmask();
-        endCheck();
+				movePlayer();
+				unmask();
+				endCheck();
 			}
 			break;
 		case "ArrowDown":
@@ -186,9 +186,9 @@ const updatePosition = () => {
 				validPath(state.player_loc_x, nextStateY2)
 			) {
 				state.player_loc_y = nextStateY2;
-        movePlayer();
-        unmask();
-        endCheck();
+				movePlayer();
+				unmask();
+				endCheck();
 			}
 			break;
 		case "ArrowLeft":
@@ -197,9 +197,9 @@ const updatePosition = () => {
 				validPath(nextStateX, state.player_loc_y)
 			) {
 				state.player_loc_x = nextStateX;
-        movePlayer();
-        unmask();
-        endCheck();
+				movePlayer();
+				unmask();
+				endCheck();
 			}
 			break;
 		case "ArrowRight":
@@ -208,9 +208,9 @@ const updatePosition = () => {
 				validPath(nextStateX2, state.player_loc_y)
 			) {
 				state.player_loc_x = nextStateX2;
-        movePlayer();
-        unmask();
-        endCheck();
+				movePlayer();
+				unmask();
+				endCheck();
 			}
 			break;
 		default:

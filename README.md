@@ -28,7 +28,7 @@ I conceived of my gameboard as html divs within a container div that was a css g
 ### Movement
 To move the player, I used the combination of the following:
 * A global object `state` the stores the current direction `state.direction`
-* Eventlistener callback functions that change `state.direction` according to keyboard events of arrowkeys
+* Eventlistener callback function that change `state.direction` according to keyboard events of arrowkeys
 * An interval that calls a function to update the position of the player every .2 seconds
 
 Once the game starts, `updatePosition` is called at intervals to update the position of the player div depending on the direction in `state.direction`.
